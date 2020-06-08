@@ -24,13 +24,7 @@ const initialEevents = [
 
 const getDate = (date, time) => (date+' '+ time+':00').replace(/-/g,"/")
 
-const getDays = (days) => {
-    let jsxDays = []
-    for (let index = 0; index < days; index++) {
-        jsxDays.push(<Day key={index} day={index + 1} />)
-    }
-    return jsxDays
-}
+const getDaysArray = (length) => new Array(length).fill('')
 
 const Calendar = () => {
     const currMonth = new Date().getMonth() + 1
@@ -101,7 +95,7 @@ const Calendar = () => {
                         <hr />
                         <div className={myCSS.Days}>
                             <div style={{ width: 130 * (monthStartDay - 1), display: 'inline-block' }}> </div>
-                            {getDays(daysInMonth)}
+                            {getDaysArray(daysInMonth).map((a, index) => <Day key={index} day={index + 1} />) } 
                         </div>
                     </div>
                     <hr />
