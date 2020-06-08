@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import myCSS from './Calendar.module.css'
 import Day from './Day/Day'
 
@@ -28,25 +28,47 @@ const getDays = (days) => {
 }
 
 const Calendar = ({ month }) => {
+    const currMonth = new Date().getMonth() + 1
+    const [selectedMonth, setMonth] = useState(currMonth)
+    const [selectedYear, setYear] = useState(2020)
+
+    const incrementMonth = () => {
+        if (selectedMonth > 11) {
+            setMonth(1)
+            setYear( selectedYear + 1)
+        } else {
+            setMonth(selectedMonth + 1)
+        }    
+    }
+    const decrementMonth = () => {
+        if (selectedMonth < 2) {
+            setMonth(12)
+            setYear( selectedYear - 1 )
+        } else {
+            setMonth(selectedMonth - 1)
+        }    
+    }
     const currDate = new Date()
-    const currMonth = new Date().getMonth()
+
     const daysInMonth = months[currMonth].days
 
     const currFullDate = new Date().toDateString()
     const currentDay = new Date().getDay()
 
-    console.log(currMonth);
-
     return (
         <div className={myCSS.Calendar}>
             <div className={myCSS.CalendarBorder}>
-            <h1>Calendar</h1>
+                <h1>Calendar</h1>
 
                 <div className={myCSS.Month}>
                     <div style={{ marginRight: '10px' }}>
                         <div className={myCSS.Title} >
                             <span>{currFullDate}</span>
-                            <span><button>{'<'}</button>&nbsp;June, 2020&nbsp;<button>{'>'}</button></span>
+                            <span>
+                                <button onClick={decrementMonth}>{'<'}</button>
+                                &nbsp;{months[selectedMonth - 1].label}, {selectedYear}&nbsp;
+                                <button onClick={incrementMonth}>{'>'}</button>
+                            </span>
                         </div>
                         <hr />
                         <div className={myCSS.Days}>

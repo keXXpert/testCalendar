@@ -1,7 +1,6 @@
 .Calendar {
     display: flex;
     justify-content: center;
-    padding-top: 100px;
     flex-grow: 1;
     width: 100%;
     background: #797979;
