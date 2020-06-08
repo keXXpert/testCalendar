@@ -18,7 +18,7 @@ const months = [
 ]
 
 const events = [
-    {id: 1 , name: 'Test event', startsDate: '2020-06-10', startsTime}
+    {id: 1 , name: 'Test event', startsDate: '2020-06-10', startsTime: '11:00'}
 ]
 
 const getDays = (days) => {
