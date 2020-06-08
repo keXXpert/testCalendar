@@ -32,8 +32,6 @@ const Calendar = () => {
     const [selectedYear, setYear] = useState(2020)
     const [events, setEvents] = useState(initialEevents)
 
-    console.log('Events render', events);
-
     const monthStartDay = new Date(`${selectedYear}-${selectedMonth}-01`).getDay();
 
     const incrementMonth = () => {
@@ -71,10 +69,10 @@ const Calendar = () => {
         setEvents(evt)
     }
 
-    const currDate = new Date()
     
     const daysInMonth = months[selectedMonth - 1].days
-
+    const upcomingEvents = events.filter((event)=> new Date(getDate(event.startsDate,event.startsTime))> new Date())
+    
     const currFullDate = new Date().toDateString()
     const currentDay = new Date().getDay()
 
@@ -104,7 +102,7 @@ const Calendar = () => {
                             Upcoming events
                             <hr />
                             <div className={myCSS.Events}>
-                                {events.map((event, index) => (
+                                {upcomingEvents.map((event, index) => (
                                     <div className={myCSS.Upcoming} key={index}><small><p>{event.startsDate}</p>{event.startsTime} - {event.name}</small></div>
                                 ))}
                             </div>
