@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import myCSS from './Calendar.module.css'
 import Day from './Day/Day'
+import CreateForm from './CreateForm/CreateForm'
 
 const months = [
     { label: 'January', days: 31 },
@@ -17,9 +18,11 @@ const months = [
     { label: 'December', days: 31 }
 ]
 
-const events = [
-    {id: 1 , name: 'Test event', startsDate: '2020-06-10', startsTime: '11:00'}
+const initialEevents = [
+    { id: 1, name: 'Test event', startsDate: '2020-06-10', startsTime: '11:00', endsDate: '2020-06-10', endsTime: '12:00'}
 ]
+
+const getDate = (date, time) => (date+' '+ time+':00').replace(/-/g,"/")
 
 const getDays = (days) => {
     let jsxDays = []
@@ -29,37 +32,54 @@ const getDays = (days) => {
     return jsxDays
 }
 
-const Calendar = ({ month }) => {
+const Calendar = () => {
     const currMonth = new Date().getMonth() + 1
     const [selectedMonth, setMonth] = useState(currMonth)
     const [selectedYear, setYear] = useState(2020)
+    const [events, setEvents] = useState(initialEevents)
+
+    console.log('Events render', events);
 
     const monthStartDay = new Date(`${selectedYear}-${selectedMonth}-01`).getDay();
-    
+
     const incrementMonth = () => {
         if (selectedMonth > 11) {
             setMonth(1)
-            setYear( selectedYear + 1)
+            setYear(selectedYear + 1)
         } else {
             setMonth(selectedMonth + 1)
-        }    
+        }
     }
 
     const setToCurrent = () => {
         setYear(2020)
         setMonth(currMonth)
     }
+
     const decrementMonth = () => {
         if (selectedMonth < 2) {
             setMonth(12)
-            setYear( selectedYear - 1 )
+            setYear(selectedYear - 1)
         } else {
             setMonth(selectedMonth - 1)
-        }    
+        }
     }
-    const currDate = new Date()
 
-    const daysInMonth = months[selectedMonth-1].days
+    const addNewEvent = (name, startsDate, startsTime, endsDate, endsTime) => {
+        const evt = [...events]
+        evt.push({
+            id: evt.length + 1,
+            name, startsDate, startsTime, endsDate, endsTime
+        })
+        console.log(new Date(getDate(startsDate,startsTime)));
+        
+        evt.sort((a, b) => (new Date(getDate(a.startsDate,a.startsTime)) - new Date(getDate(b.startsDate, b.startsTime))))
+        setEvents(evt)
+    }
+
+    const currDate = new Date()
+    
+    const daysInMonth = months[selectedMonth - 1].days
 
     const currFullDate = new Date().toDateString()
     const currentDay = new Date().getDay()
@@ -68,11 +88,10 @@ const Calendar = ({ month }) => {
         <div className={myCSS.Calendar}>
             <div className={myCSS.CalendarBorder}>
                 <h1>Calendar</h1>
-
                 <div className={myCSS.Month}>
                     <div style={{ marginRight: '10px' }}>
                         <div className={myCSS.Title} >
-                            <span onClick={setToCurrent} style={{cursor: 'pointer'}}>Current date: {currFullDate}</span>
+                            <span onClick={setToCurrent} style={{ cursor: 'pointer' }}>Current date: {currFullDate}</span>
                             <span>
                                 <button onClick={decrementMonth}>{'<'}</button>
                                 &nbsp;{months[selectedMonth - 1].label}, {selectedYear}&nbsp;
@@ -81,37 +100,22 @@ const Calendar = ({ month }) => {
                         </div>
                         <hr />
                         <div className={myCSS.Days}>
-                            <div style={{width: 130*(monthStartDay-1), display: 'inline-block'}}> </div>
+                            <div style={{ width: 130 * (monthStartDay - 1), display: 'inline-block' }}> </div>
                             {getDays(daysInMonth)}
                         </div>
                     </div>
                     <hr />
                     <div className={myCSS.Edit}>
                         <div>
-                            Upcoming Events
+                            Upcoming events
                             <hr />
-                            <div className={myCSS.Events}></div>
+                            <div className={myCSS.Events}>
+                                {events.map((event, index) => (
+                                    <div className={myCSS.Upcoming} key={index}><small><p>{event.startsDate}</p>{event.startsTime} - {event.name}</small></div>
+                                ))}
+                            </div>
                         </div>
-                        <div className={myCSS.Create}>
-                            Create reminder
-                            <hr />
-                            <form>
-                                <p>Name:</p>
-                                <input type='text' placeholder='Name' />
-                                <div className={myCSS.start}>
-                                    <p>Starts at:</p>
-                                    <input type='date' onChange={(e)=> console.log(e.target.value)}/>
-                                    <input type='time' onChange={(e)=> console.log(e.target.value)}/>
-                                </div>
-                                <div className={myCSS.end}>
-                                    <p>Ends at:</p>
-                                    <input type='date' />
-                                    <input type='time' />
-                                </div>
-                                <div><button>Create</button></div>
-                            </form>
-                        </div>
-
+                        <CreateForm addNewEvent={addNewEvent}/>
                     </div>
                 </div>
             </div>

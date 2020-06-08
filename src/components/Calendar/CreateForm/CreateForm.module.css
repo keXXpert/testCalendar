@@ -1,0 +1,30 @@
+.Create {
+    margin-top: 10px;
+    
+}
+.Create p {
+    margin: 0;
+    margin-top: 10px;
+    text-align: left;
+}
+.Create button{
+    background: inherit;
+    margin-top: 15px;
+    padding: 5px 15px;
+    border: 1px solid #fff;
+    border-radius: 4px;
+    color: #fff;
+}
+
+.Create input{
+    background: inherit;
+    border: 1px solid #fff;
+    border-radius: 4px;
+    color: #fff;
+}
+
+.Create .start, .end{
+    margin-top: 10px;
+    text-align: left;
+    justify-content: left;
+}
