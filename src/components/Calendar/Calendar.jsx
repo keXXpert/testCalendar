@@ -17,7 +17,9 @@ const months = [
     { label: 'December', days: 31 }
 ]
 
-const events = []
+const events = [
+    {id: 1 , name: 'Test event', startsDate: '2020-06-10', startsTime}
+]
 
 const getDays = (days) => {
     let jsxDays = []
@@ -42,6 +44,11 @@ const Calendar = ({ month }) => {
             setMonth(selectedMonth + 1)
         }    
     }
+
+    const setToCurrent = () => {
+        setYear(2020)
+        setMonth(currMonth)
+    }
     const decrementMonth = () => {
         if (selectedMonth < 2) {
             setMonth(12)
@@ -65,7 +72,7 @@ const Calendar = ({ month }) => {
                 <div className={myCSS.Month}>
                     <div style={{ marginRight: '10px' }}>
                         <div className={myCSS.Title} >
-                            <span>{currFullDate}</span>
+                            <span onClick={setToCurrent} style={{cursor: 'pointer'}}>Current date: {currFullDate}</span>
                             <span>
                                 <button onClick={decrementMonth}>{'<'}</button>
                                 &nbsp;{months[selectedMonth - 1].label}, {selectedYear}&nbsp;
@@ -93,8 +100,8 @@ const Calendar = ({ month }) => {
                                 <input type='text' placeholder='Name' />
                                 <div className={myCSS.start}>
                                     <p>Starts at:</p>
-                                    <input type='date' />
-                                    <input type='time' />
+                                    <input type='date' onChange={(e)=> console.log(e.target.value)}/>
+                                    <input type='time' onChange={(e)=> console.log(e.target.value)}/>
                                 </div>
                                 <div className={myCSS.end}>
                                     <p>Ends at:</p>
