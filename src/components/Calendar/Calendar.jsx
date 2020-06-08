@@ -1,0 +1,90 @@
+import React from 'react'
+import myCSS from './Calendar.module.css'
+import Day from './Day/Day'
+
+const months = [
+    { label: 'January', days: 31 },
+    { label: 'February', days: 29 },
+    { label: 'March', days: 31 },
+    { label: 'April', days: 30 },
+    { label: 'May', days: 31 },
+    { label: 'June', days: 30 },
+    { label: 'July', days: 31 },
+    { label: 'August', days: 31 },
+    { label: 'September', days: 30 },
+    { label: 'October', days: 31 },
+    { label: 'November', days: 30 },
+    { label: 'December', days: 31 }
+]
+
+const events = []
+
+const getDays = (days) => {
+    let jsxDays = []
+    for (let index = 0; index < days; index++) {
+        jsxDays.push(<Day key={index} day={index + 1} />)
+    }
+    return jsxDays
+}
+
+const Calendar = ({ month }) => {
+    const currDate = new Date()
+    const currMonth = new Date().getMonth()
+    const daysInMonth = months[currMonth].days
+
+    const currFullDate = new Date().toDateString()
+    const currentDay = new Date().getDay()
+
+    console.log(currMonth);
+
+    return (
+        <div className={myCSS.Calendar}>
+            <div className={myCSS.CalendarBorder}>
+            <h1>Calendar</h1>
+
+                <div className={myCSS.Month}>
+                    <div style={{ marginRight: '10px' }}>
+                        <div className={myCSS.Title} >
+                            <span>{currFullDate}</span>
+                            <span><button>{'<'}</button>&nbsp;June, 2020&nbsp;<button>{'>'}</button></span>
+                        </div>
+                        <hr />
+                        <div className={myCSS.Days}>
+                            {getDays(31)}
+                        </div>
+                    </div>
+                    <hr />
+                    <div className={myCSS.Edit}>
+                        <div>
+                            Upcoming Events
+                            <hr />
+                            <div className={myCSS.Events}></div>
+                        </div>
+                        <div className={myCSS.Create}>
+                            Create reminder
+                            <hr />
+                            <form>
+                                <p>Name:</p>
+                                <input type='text' placeholder='Name' />
+                                <div className={myCSS.start}>
+                                    <p>Starts at:</p>
+                                    <input type='date' />
+                                    <input type='time' />
+                                </div>
+                                <div className={myCSS.end}>
+                                    <p>Ends at:</p>
+                                    <input type='date' />
+                                    <input type='time' />
+                                </div>
+                                <div><button>Create</button></div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    )
+}
+
+export default Calendar
