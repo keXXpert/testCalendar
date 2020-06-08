@@ -59,7 +59,7 @@ const Calendar = ({ month }) => {
     }
     const currDate = new Date()
 
-    const daysInMonth = months[currMonth].days
+    const daysInMonth = months[selectedMonth-1].days
 
     const currFullDate = new Date().toDateString()
     const currentDay = new Date().getDay()
@@ -82,7 +82,7 @@ const Calendar = ({ month }) => {
                         <hr />
                         <div className={myCSS.Days}>
                             <div style={{width: 130*(monthStartDay-1), display: 'inline-block'}}> </div>
-                            {getDays(31)}
+                            {getDays(daysInMonth)}
                         </div>
                     </div>
                     <hr />
