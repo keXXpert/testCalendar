@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import myCSS from './Calendar.module.css'
 import Day from './Day/Day'
 import CreateForm from './CreateForm/CreateForm'
+import Modal from '../Modal/Modal'
 
 const months = [
     { label: 'January', days: 31 },
@@ -31,6 +32,8 @@ const Calendar = () => {
     const [selectedMonth, setMonth] = useState(currMonth)
     const [selectedYear, setYear] = useState(2020)
     const [events, setEvents] = useState(initialEevents)
+    const [isModalOpen, setModalOpen] = useState(false)
+    const [editId, setEditId] = useState(null)
 
     const monthStartDay = new Date(`${selectedYear}-${selectedMonth}-01`).getDay();
     const currFullDate = new Date().toDateString()
@@ -66,14 +69,32 @@ const Calendar = () => {
             id: evt.length + 1,
             name, startsDate, startsTime, endsDate, endsTime
         })
-        console.log(new Date(getDate(startsDate, startsTime)));
-
         evt.sort((a, b) => (getDate(a.startsDate, a.startsTime) - getDate(b.startsDate, b.startsTime)))
         setEvents(evt)
     }
 
-    const handleEventClick = (id) => {
+    const deleteEvent = (id) => {
+        setEditId(null)
+        setModalOpen(false)
+        let localEvents = events.filter((event) => event.id !== id)
+        setEvents(localEvents)
+    }
 
+    const closeModal = (event, id, del) => {
+        setEditId(null)
+        setModalOpen(false)
+        let locatEvents = [...events]
+        if (del) {
+            locatEvents.splice(id-1, 1)
+        } else {
+            locatEvents[id-1] = event
+        } 
+        setEvents(locatEvents)
+    }
+
+    const handleEventClick = (id) => {
+        setModalOpen(true)
+        setEditId(id)
     }
 
     // filtering only upcoming events from all
@@ -81,6 +102,7 @@ const Calendar = () => {
 
     return (
         <div className={myCSS.Calendar}>
+            {isModalOpen && !!editId && <Modal events={events} id={editId} closeModal={closeModal} deleteEvent={deleteEvent}/> }
             <div className={myCSS.CalendarBorder}>
                 <h1>Calendar</h1>
                 <div className={myCSS.Month}>
@@ -111,7 +133,7 @@ const Calendar = () => {
                             <hr />
                             <div className={myCSS.Events}>
                                 {upcomingEvents.map((event, index) => (
-                                    <div className={myCSS.Upcoming} key={index}><small><p>{event.startsDate}</p>{event.startsTime} - {event.name}</small></div>
+                                    <div className={myCSS.Upcoming} key={index} onClick={() => {handleEventClick(event.id)}}><small><p>{event.startsDate}</p>{event.startsTime} - {event.name}</small></div>
                                 ))}
                             </div>
                         </div>

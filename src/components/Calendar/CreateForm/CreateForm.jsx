@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import myCSS from './CreateForm.module.css'
 
-const CreateForm = ({addNewEvent}) => {
+const CreateForm = ({addNewEvent, edit = false}) => {
 
     const [name, setName] = useState('')
     const [startsDate, setStartDate] = useState('2020-06-08')
@@ -21,7 +21,7 @@ const CreateForm = ({addNewEvent}) => {
 
     return (
         <div className={myCSS.Create}>
-            Create event
+            {edit ? 'Edit event' : 'Create event'}
             <hr />
             <form onSubmit={(e)=> {e.preventDefault()}}>
                 <p>Name:</p>
@@ -36,7 +36,7 @@ const CreateForm = ({addNewEvent}) => {
                     <input type='date' value={endsDate} onChange={(e) => setEndDate(e.target.value)}/>
                     <input type='time' value={endsTime} onChange={(e) => setEndTime(e.target.value)}/>
                 </div>
-                <div><button onClick={submitEvent}>Create</button></div>
+                <div><button onClick={submitEvent}>{edit? 'Edit':'Create'}</button></div>
             </form>
         </div>
     )

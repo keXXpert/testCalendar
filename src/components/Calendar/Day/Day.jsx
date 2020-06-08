@@ -12,7 +12,6 @@ const Day = ({ day, month, year, handleEventClick, events }) => {
 
     const date = `${year}-${localMonth}-${localDay}`
     const todayEvents = events.filter( (event) => event.startsDate === date)
-    console.log(todayEvents);
         
     return (
         <div className={myCSS.Day}>
