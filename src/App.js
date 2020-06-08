@@ -6,7 +6,7 @@ function App() {
   return (
     <div className={myCSS.App}>
       <main>
-      <Calendar />
+        <Calendar />
       </main>
     </div>
   );

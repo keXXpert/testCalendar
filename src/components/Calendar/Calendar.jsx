@@ -32,6 +32,8 @@ const Calendar = ({ month }) => {
     const [selectedMonth, setMonth] = useState(currMonth)
     const [selectedYear, setYear] = useState(2020)
 
+    const monthStartDay = new Date(`${selectedYear}-${selectedMonth}-01`).getDay();
+    
     const incrementMonth = () => {
         if (selectedMonth > 11) {
             setMonth(1)
@@ -72,6 +74,7 @@ const Calendar = ({ month }) => {
                         </div>
                         <hr />
                         <div className={myCSS.Days}>
+                            <div style={{width: 130*(monthStartDay-1), display: 'inline-block'}}> </div>
                             {getDays(31)}
                         </div>
                     </div>
