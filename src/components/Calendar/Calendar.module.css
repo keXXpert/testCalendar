@@ -65,6 +65,10 @@
     border-radius: 4px;
     color: #fff;
 }
+.Upcoming:hover{
+    background: #888;
+    cursor: pointer;
+}
 
 .Edit .Events .Upcoming p {
     margin: 0px;

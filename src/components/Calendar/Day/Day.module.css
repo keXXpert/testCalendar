@@ -6,4 +6,20 @@
     color: #444;
     display: inline-block;
     border-radius: 4px;
+    overflow: auto;
 }
+
+.Upcoming {
+    color: #000;
+    margin: 0px 5px;
+    margin-bottom: 10px;
+    padding: 0px 5px;
+    background: #aaa;
+    border-radius: 4px;
+    color: #fff;
+}
+.Upcoming:hover{
+    background: #888;
+    cursor: pointer;
+}
+

@@ -19,10 +19,10 @@ const months = [
 ]
 
 const initialEevents = [
-    { id: 1, name: 'Test event', startsDate: '2020-06-10', startsTime: '11:00', endsDate: '2020-06-10', endsTime: '12:00'}
+    { id: 1, name: 'Test event', startsDate: '2020-06-10', startsTime: '11:00', endsDate: '2020-06-10', endsTime: '12:00' }
 ]
 
-const getDate = (date, time) => (date+' '+ time+':00').replace(/-/g,"/")
+const getDate = (date, time) => new Date((date + ' ' + time + ':00').replace(/-/g, "/"))
 
 const getDaysArray = (length) => new Array(length).fill('')
 
@@ -33,6 +33,9 @@ const Calendar = () => {
     const [events, setEvents] = useState(initialEevents)
 
     const monthStartDay = new Date(`${selectedYear}-${selectedMonth}-01`).getDay();
+    const currFullDate = new Date().toDateString()
+    const daysInMonth = months[selectedMonth - 1].days
+
 
     const incrementMonth = () => {
         if (selectedMonth > 11) {
@@ -63,18 +66,18 @@ const Calendar = () => {
             id: evt.length + 1,
             name, startsDate, startsTime, endsDate, endsTime
         })
-        console.log(new Date(getDate(startsDate,startsTime)));
-        
-        evt.sort((a, b) => (new Date(getDate(a.startsDate,a.startsTime)) - new Date(getDate(b.startsDate, b.startsTime))))
+        console.log(new Date(getDate(startsDate, startsTime)));
+
+        evt.sort((a, b) => (getDate(a.startsDate, a.startsTime) - getDate(b.startsDate, b.startsTime)))
         setEvents(evt)
     }
 
-    
-    const daysInMonth = months[selectedMonth - 1].days
-    const upcomingEvents = events.filter((event)=> new Date(getDate(event.startsDate,event.startsTime))> new Date())
-    
-    const currFullDate = new Date().toDateString()
-    const currentDay = new Date().getDay()
+    const handleEventClick = (id) => {
+
+    }
+
+    // filtering only upcoming events from all
+    const upcomingEvents = events.filter((event) => getDate(event.startsDate, event.startsTime) > new Date())
 
     return (
         <div className={myCSS.Calendar}>
@@ -93,7 +96,12 @@ const Calendar = () => {
                         <hr />
                         <div className={myCSS.Days}>
                             <div style={{ width: 130 * (monthStartDay - 1), display: 'inline-block' }}> </div>
-                            {getDaysArray(daysInMonth).map((a, index) => <Day key={index} day={index + 1} />) } 
+                            {getDaysArray(daysInMonth).map((a, index) =>
+                                <Day key={index} month={selectedMonth} year={selectedYear}
+                                    day={index + 1}
+                                    events={events}
+                                    handleEventClick={handleEventClick}
+                                />)}
                         </div>
                     </div>
                     <hr />
@@ -107,7 +115,7 @@ const Calendar = () => {
                                 ))}
                             </div>
                         </div>
-                        <CreateForm addNewEvent={addNewEvent}/>
+                        <CreateForm addNewEvent={addNewEvent} />
                     </div>
                 </div>
             </div>
