@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import myCSS from './Calendar.module.css'
 import Day from './Day/Day'
 import Modal from '../Modal/Modal'
@@ -39,6 +39,19 @@ const Calendar = () => {
     const currFullDate = new Date().toDateString()
     const daysInMonth = months[selectedMonth - 1].days
 
+    useEffect( () => {
+        const interval = setInterval (()=> {
+            for (let index = 0; index < events.length; index++) {
+                const evt = events[index];
+                const date = getDate(evt.startsDate, evt.startsTime)
+                const timeout = 10*60*1000
+                if (date < new Date(new Date().getTime() + timeout) && date > new Date(new Date().getTime() + timeout - 5000)) {
+                    alert(`You have an event "${evt.name}" in 10 minutes`)
+                }
+            } 
+        }, 5000)
+        return () => clearInterval(interval)
+    }, [events])
 
     const incrementMonth = () => {
         if (selectedMonth > 11) {
