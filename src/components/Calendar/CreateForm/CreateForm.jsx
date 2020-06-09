@@ -4,8 +4,6 @@ import myCSS from './CreateForm.module.css'
 
 
 const CreateForm = ({handleNewEventData, edit = false, event, closeModal}) => {
-    console.log(edit, event);
-    
     let initialName = ''
     let initialStartDate = '2020-06-09'
     let initialEndDate = '2020-06-09'
@@ -51,7 +49,7 @@ const CreateForm = ({handleNewEventData, edit = false, event, closeModal}) => {
                     <input type='date' value={endsDate} onChange={(e) => setEndDate(e.target.value)}/>
                     <input type='time' value={endsTime} onChange={(e) => setEndTime(e.target.value)}/>
                 </div>
-                <div><button onClick={submitEvent}>{edit? 'Edit':'Create'}</button><button onClick={closeModal}>Cancel</button></div>
+                <div><button type="button" onClick={submitEvent}>{edit? 'Edit':'Create'}</button><button type="button" onClick={closeModal}>Cancel</button></div>
             </form>
         </div>
     )

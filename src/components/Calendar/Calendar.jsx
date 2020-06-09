@@ -64,7 +64,7 @@ const Calendar = () => {
     }
 
     const handleNewEventData = (name, startsDate, startsTime, endsDate, endsTime) => {
-        let evt ={ name, startsDate, startsTime, endsDate, endsTime }
+        let evt = { name, startsDate, startsTime, endsDate, endsTime }
         let evts = [...events]
         if (editId) {
             evt.id = editId
@@ -101,8 +101,8 @@ const Calendar = () => {
 
     return (
         <div className={myCSS.Calendar}>
-            {isModalOpen && !!editId && <Modal events={events} id={editId} handleNewEventData={handleNewEventData} deleteEvent={deleteEvent} closeModal={closeModal}/>}
-            {isModalOpen && !editId && <Modal handleNewEventData={handleNewEventData} closeModal={closeModal}/>}
+            {isModalOpen && !!editId && <Modal events={events} id={editId} handleNewEventData={handleNewEventData} deleteEvent={deleteEvent} closeModal={closeModal} />}
+            {isModalOpen && !editId && <Modal handleNewEventData={handleNewEventData} closeModal={closeModal} />}
             <div className={myCSS.CalendarBorder}>
                 <h1>Calendar</h1>
                 <div className={myCSS.Month}>
@@ -137,8 +137,7 @@ const Calendar = () => {
                                 ))}
                             </div>
                         </div>
-                        <label><input type='checkbox' />Only upcoming 2 weeks</label>
-                        <button className={myCSS.Button} onClick={() => {setModalOpen(true)}}>Create new event</button>
+                        <button className={myCSS.Button} onClick={() => { setModalOpen(true) }}>Create new event</button>
                     </div>
                 </div>
             </div>
