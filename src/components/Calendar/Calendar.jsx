@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import myCSS from './Calendar.module.css'
 import Day from './Day/Day'
-import CreateForm from './CreateForm/CreateForm'
 import Modal from '../Modal/Modal'
 
 const months = [
@@ -34,6 +33,7 @@ const Calendar = () => {
     const [events, setEvents] = useState(initialEevents)
     const [isModalOpen, setModalOpen] = useState(false)
     const [editId, setEditId] = useState(null)
+    const [newEventId, setNewEventId] = useState(2)
 
     const monthStartDay = new Date(`${selectedYear}-${selectedMonth}-01`).getDay();
     const currFullDate = new Date().toDateString()
@@ -63,33 +63,32 @@ const Calendar = () => {
         }
     }
 
-    const addNewEvent = (name, startsDate, startsTime, endsDate, endsTime) => {
-        const evt = [...events]
-        evt.push({
-            id: evt.length + 1,
-            name, startsDate, startsTime, endsDate, endsTime
-        })
-        evt.sort((a, b) => (getDate(a.startsDate, a.startsTime) - getDate(b.startsDate, b.startsTime)))
-        setEvents(evt)
+    const handleNewEventData = (name, startsDate, startsTime, endsDate, endsTime) => {
+        let evt ={ name, startsDate, startsTime, endsDate, endsTime }
+        let evts = [...events]
+        if (editId) {
+            evt.id = editId
+            evts = events.filter((event) => event.id !== editId)
+        } else {
+            evt.id = newEventId
+        }
+
+        evts.push(evt)
+        evts.sort((a, b) => (getDate(a.startsDate, a.startsTime) - getDate(b.startsDate, b.startsTime)))
+        setEvents(evts)
+        setNewEventId(newEventId + 1)
+        closeModal()
     }
 
     const deleteEvent = (id) => {
-        setEditId(null)
-        setModalOpen(false)
         let localEvents = events.filter((event) => event.id !== id)
         setEvents(localEvents)
+        closeModal()
     }
 
-    const closeModal = (event, id, del) => {
+    const closeModal = () => {
         setEditId(null)
         setModalOpen(false)
-        let locatEvents = [...events]
-        if (del) {
-            locatEvents.splice(id-1, 1)
-        } else {
-            locatEvents[id-1] = event
-        } 
-        setEvents(locatEvents)
     }
 
     const handleEventClick = (id) => {
@@ -102,7 +101,8 @@ const Calendar = () => {
 
     return (
         <div className={myCSS.Calendar}>
-            {isModalOpen && !!editId && <Modal events={events} id={editId} closeModal={closeModal} deleteEvent={deleteEvent}/> }
+            {isModalOpen && !!editId && <Modal events={events} id={editId} handleNewEventData={handleNewEventData} deleteEvent={deleteEvent} closeModal={closeModal}/>}
+            {isModalOpen && !editId && <Modal handleNewEventData={handleNewEventData} closeModal={closeModal}/>}
             <div className={myCSS.CalendarBorder}>
                 <h1>Calendar</h1>
                 <div className={myCSS.Month}>
@@ -133,11 +133,12 @@ const Calendar = () => {
                             <hr />
                             <div className={myCSS.Events}>
                                 {upcomingEvents.map((event, index) => (
-                                    <div className={myCSS.Upcoming} key={index} onClick={() => {handleEventClick(event.id)}}><small><p>{event.startsDate}</p>{event.startsTime} - {event.name}</small></div>
+                                    <div className={myCSS.Upcoming} key={index} onClick={() => { handleEventClick(event.id) }}><small><p>{event.startsDate}</p>{event.startsTime} - {event.name}</small></div>
                                 ))}
                             </div>
                         </div>
-                        <CreateForm addNewEvent={addNewEvent} />
+                        <label><input type='checkbox' />Only upcoming 2 weeks</label>
+                        <button className={myCSS.Button} onClick={() => {setModalOpen(true)}}>Create new event</button>
                     </div>
                 </div>
             </div>

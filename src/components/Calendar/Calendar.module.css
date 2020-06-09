@@ -50,7 +50,7 @@
 .Edit .Events {
     margin-top: 15px;
     background: #fff;
-    height: 250px;
+    height: 500px;
     border-radius: 4px;
     padding: 5px;
     overflow-y: auto;
@@ -73,4 +73,15 @@
 
 .Edit .Events .Upcoming p {
     margin: 0px;
+}
+
+.Button {
+    margin-top: 25px;
+    height: 40px;
+    width: 190px;
+    background: inherit;
+    border-radius: 5px;
+    border: 1px solid #fff;
+    color: #fff;
+    font-size: 15px;
 }

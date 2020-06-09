@@ -18,7 +18,7 @@ const Day = ({ day, month, year, handleEventClick, events }) => {
             <strong>{day}</strong>
             <hr />
             {todayEvents.map((event, index) => 
-                <div className={myCSS.Upcoming} key={index}>
+                <div onClick={()=>{handleEventClick(event.id)}} className={myCSS.Upcoming} key={index}>
                     <small>{event.startsTime} - {event.name}</small>
                 </div>)}
         </div>
